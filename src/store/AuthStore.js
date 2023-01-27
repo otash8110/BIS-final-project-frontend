@@ -20,12 +20,28 @@ export const auth = {
                     return Promise.reject(error);
                 }
             )
+        },
+
+        register({ commit }, user) {
+            return Auth.register(user).then(
+                response => {
+                    commit('registerSuccess');
+                    return Promise.resolve(response.data);
+                },
+                error => {
+                    commit('registerSuccess');
+                    return Promise.reject(error);
+                }
+            )
         }
     },
     mutations: {
         loginSuccess(state, user) {
             state.status.loggedIn = true;
             state.user = user
+        },
+        registerSuccess(state) {
+            state.status.loggedIn = false;
         }
     }
 }

@@ -10,18 +10,18 @@
               @submit.prevent="onSubmit"
             >
               <v-text-field
-                v-model="email"
+                v-model="user.email"
                 :readonly="loading"
-                :rules="[required]"
+                :rules="[validation.emailValidation]"
                 class="mb-2"
                 clearable
                 label="Email"
               ></v-text-field>
       
               <v-text-field
-                v-model="password"
+                v-model="user.password"
                 :readonly="loading"
-                :rules="[required]"
+                :rules="[validation.required]"
                 clearable
                 label="Password"
                 placeholder="Enter your password"
@@ -30,7 +30,6 @@
               <br>
       
               <v-btn
-                :disabled="!form"
                 :loading="loading"
                 block
                 color="success"
@@ -47,12 +46,23 @@
 </template>
 
 <script>
+import User from '@/models/User';
+import { emailValidation } from "../../services/Validation/FormValidations";
+
 export default {
     data: () => ({
       form: false,
       email: null,
       password: null,
       loading: false,
+      user: new User(),
+      validation: {
+        emailValidation,
+        required: (v) => {
+        return !!v || 'Field is required'
+      },
+      },
+
     }),
 
     methods: {
@@ -61,11 +71,10 @@ export default {
 
         this.loading = true
 
-        setTimeout(() => (this.loading = false), 2000)
+        this.$store.dispatch("auth/register")
+        .then
       },
-      required (v) {
-        return !!v || 'Field is required'
-      },
+      
     },
   }
 </script>
