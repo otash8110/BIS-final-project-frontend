@@ -3,9 +3,10 @@
   <v-app>
     <navbar />
     <v-main>
+      <ToastNotification />
       <nav>
         <router-link to="/">Home</router-link> |
-        <router-link to="/register">Register</router-link>
+        <router-link v-if="!currentUserStatus" to="/register">Register</router-link>
       </nav>
       <router-view/>
     </v-main>
@@ -14,11 +15,18 @@
 
 <script>
 import Navbar from './components/Navbar.vue'
+import ToastNotification from './components/ToastNotification.vue';
 
 export default {
   name: 'App',
   components: {
-    Navbar
+    Navbar,
+    ToastNotification
+},
+  computed: {
+    currentUserStatus() {
+      return this.$store.state.auth.status.loggedIn;
+    }
   }
 }
 </script>

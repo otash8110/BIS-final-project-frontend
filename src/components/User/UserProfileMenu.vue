@@ -39,6 +39,7 @@
               <v-btn
                 rounded
                 variant="text"
+                @click="HandleLogout"
               >
                 Disconnect
               </v-btn>
@@ -57,6 +58,14 @@ export default {
         email: 'john.doe@doe.com',
       },
     }),
+
+    methods: {
+      HandleLogout() {
+        this.$store.dispatch("auth/logout").then(() => {
+          this.$router.go();
+        })
+      }
+    }
   }
 </script>
 

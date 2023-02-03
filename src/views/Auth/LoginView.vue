@@ -20,6 +20,7 @@
       
               <v-text-field
                 v-model="user.password"
+                type="password"
                 :readonly="loading"
                 :rules="[validation.required]"
                 clearable
@@ -71,8 +72,13 @@ export default {
 
         this.loading = true
 
-        this.$store.dispatch("auth/register")
-        .then
+        this.$store.dispatch("auth/login", this.user)
+        .then(
+          () => {
+            this.$store.dispatch("signalr/createConnection");
+            this.$router.push("/");
+          }
+        )
       },
       
     },

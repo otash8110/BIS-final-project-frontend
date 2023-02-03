@@ -25,6 +25,10 @@ class Auth {
             role: user.role
         });
     }
+
+    logout() {
+        localStorage.removeItem('user');
+    }
 }
 
 
