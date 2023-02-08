@@ -27,6 +27,12 @@ export default {
     currentUserStatus() {
       return this.$store.state.auth.status.loggedIn;
     }
+  },
+  
+  mounted() {
+    if (this.currentUserStatus) {
+    this.$store.dispatch('signalr/createConnection')
+  } 
   }
 }
 </script>

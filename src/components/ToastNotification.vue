@@ -1,18 +1,19 @@
 <template>
   <v-snackbar
-      v-model="snackbar"
+      v-for="(notification, i) in notifications"
+      :key="i"
+      v-model="notification.showing"
       :timeout="2000"
       location="top right"
       transition="slide-x-reverse-transition"
-      :absolute="true"
     >
-      {{ notification }}
+      {{ notification.message }}
 
       <template v-slot:actions>
         <v-btn
           color="pink"
           variant="text"
-          @click="snackbar = false"
+          @click="notification.showing = false"
         >
           Close
         </v-btn>
@@ -26,13 +27,13 @@ import {mapGetters} from 'vuex'
 export default {
     data: () => ({
         text: "null",
-        snackbar: false
+        snackbar: false,
     }),
     name: "ToastNotification",
     computed: {
-      ...mapGetters([
-        'signalr/notification'
-      ])
+      ...mapGetters({
+        notifications: 'signalr/GetNotifications',
+    })
     }
 }
 </script>

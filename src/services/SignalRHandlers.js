@@ -1,13 +1,12 @@
 import store from "../store";
 
 export const ConfigureSignalRHandlers = function(signalRConnection) {
-
-
-    signalRConnection.on("ReceiveNotification", ReceiveNotification);
+    signalRConnection.on("UserRegistrationApproveNotification", ReceiveNotification)
 
     return signalRConnection;
 }
 
 function ReceiveNotification(data) {
-    store.commit("setNotificationMessage", data);
+    console.log(data);
+    store.commit("signalr/setNotificationMessage", data);
 }
