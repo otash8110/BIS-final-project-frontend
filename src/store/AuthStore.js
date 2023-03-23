@@ -42,9 +42,9 @@ export const auth = {
     },
 
     GetUserRole({ commit }) {
-      UserService.GetUser().then(res => {
-        console.log(res.data);
+      return UserService.GetUser().then(res => {
         commit("role", res.data.role);
+        return Promise.resolve();
       });
 
     }
@@ -69,4 +69,9 @@ export const auth = {
       state.role = role;
     }
   },
+  getters: {
+    GetRole(state) {
+        return state.role
+    }
+}
 };

@@ -49,8 +49,11 @@ export default {
     },
     methods: {
         async GetUser() {
-            var result = (await UserService.GetUser()).data;
-            this.user = result
+            if (this.currentUserStatus == true) {
+                var result = (await UserService.GetUser()).data;
+                this.user = result
+            }
+
         }
     },
     mounted() {

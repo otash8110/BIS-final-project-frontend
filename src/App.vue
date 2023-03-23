@@ -7,6 +7,7 @@
       <nav>
         <router-link to="/">Home</router-link> |
         <router-link v-if="!currentUserStatus" to="/register">Register</router-link>
+        <router-link v-if="isManufacturer" to="/error">Products</router-link>
       </nav>
       <div class="pa-6">
         <router-view />
@@ -31,12 +32,14 @@ export default {
     },
     currentUserWSConnection() {
       return this.$store.state.signalr.connection;
+    },
+    isManufacturer() {
+      return this.$store.state.auth.role == "Manufacturer" ? true : false;
     }
   },
   mounted() {
     if (this.currentUserStatus && this.currentUserWSConnection == null) {
       this.$store.dispatch('signalr/createConnection');
-      this.$store.dispatch('auth/GetUserRole');
     }
   }
 }
