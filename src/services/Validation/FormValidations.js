@@ -3,6 +3,12 @@ const emailValidation = function(value) {
         return pattern.test(value) || 'Invalid e-mail.'
 }
 
+const passwordValidation = function(value) {
+    const pattern = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+    return pattern.test(value) || 'Invalid Password'
+}
+
 module.exports = {
-    emailValidation
+    emailValidation,
+    passwordValidation
 }

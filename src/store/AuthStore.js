@@ -1,9 +1,10 @@
+import UserService from "@/services/User/UserService";
 import Auth from "../services/auth/AuthService";
 
 const user = JSON.parse(localStorage.getItem("user"));
 const initialState = user
-  ? { status: { loggedIn: true }, user }
-  : { status: { loggedIn: false }, user: null };
+  ? { status: { loggedIn: true }, user, role: null }
+  : { status: { loggedIn: false }, user: null, role: null  };
 
 export const auth = {
   namespaced: true,
@@ -39,6 +40,14 @@ export const auth = {
       Auth.logout();
       commit("logout");
     },
+
+    GetUserRole({ commit }) {
+      UserService.GetUser().then(res => {
+        console.log(res.data);
+        commit("role", res.data.role);
+      });
+
+    }
   },
   mutations: {
     loginSuccess(state, user) {
@@ -56,5 +65,8 @@ export const auth = {
       state.status.loggedIn = false;
       state.user = null;
     },
+    role(state, role) {
+      state.role = role;
+    }
   },
 };

@@ -16,7 +16,7 @@
         </v-row>
         <v-row class="v-col-2" no-gutters>
             <v-col cols="12">
-                <user-profile-menu v-if="currentUserStatus"></user-profile-menu>
+                <user-profile-menu v-if="currentUserStatus" :userinfo="user"></user-profile-menu>
                 <router-link to="/register" v-if="!currentUserStatus">
                     <h3>Sign Up</h3>
                 </router-link>
@@ -27,14 +27,34 @@
 </template>
 
 <script>
+import UserService from '@/services/User/UserService';
 import UserProfileMenu from './User/UserProfileMenu.vue'
 export default {
     components: { UserProfileMenu },
     name: "Nav-bar",
+    data() {
+        return {
+            user: ""
+        }
+    },
     computed: {
         currentUserStatus() {
             return this.$store.state.auth.status.loggedIn;
+        },
+    },
+    watch: {
+        currentUserStatus(newVal) {
+            if (newVal == true) this.GetUser();
         }
+    },
+    methods: {
+        async GetUser() {
+            var result = (await UserService.GetUser()).data;
+            this.user = result
+        }
+    },
+    mounted() {
+        this.GetUser();
     }
 }
 </script>

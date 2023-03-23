@@ -75,6 +75,7 @@ export default {
         this.$store.dispatch("auth/login", this.user)
         .then(
           () => {
+            this.$store.dispatch("signalr/createConnection");
             this.$router.push("/");
           }
         )

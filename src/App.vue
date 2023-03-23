@@ -8,7 +8,9 @@
         <router-link to="/">Home</router-link> |
         <router-link v-if="!currentUserStatus" to="/register">Register</router-link>
       </nav>
-      <router-view/>
+      <div class="pa-6">
+        <router-view />
+      </div>
     </v-main>
   </v-app>
 </template>
@@ -22,17 +24,20 @@ export default {
   components: {
     Navbar,
     ToastNotification
-},
+  },
   computed: {
     currentUserStatus() {
       return this.$store.state.auth.status.loggedIn;
+    },
+    currentUserWSConnection() {
+      return this.$store.state.signalr.connection;
     }
   },
-  
   mounted() {
-    if (this.currentUserStatus) {
-    this.$store.dispatch('signalr/createConnection')
-  } 
+    if (this.currentUserStatus && this.currentUserWSConnection == null) {
+      this.$store.dispatch('signalr/createConnection');
+      this.$store.dispatch('auth/GetUserRole');
+    }
   }
 }
 </script>
@@ -42,7 +47,6 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 

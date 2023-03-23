@@ -11,7 +11,7 @@
 
       <template v-slot:actions>
         <v-btn
-          color="pink"
+          color="white"
           variant="text"
           @click="notification.showing = false"
         >

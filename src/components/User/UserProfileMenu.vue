@@ -32,6 +32,7 @@
               <v-btn
                 rounded
                 variant="text"
+                @click="HandleEditAccount"
               >
                 Edit Account
               </v-btn>
@@ -53,17 +54,34 @@
 export default {
     data: () => ({
       user: {
-        initials: 'JD',
-        fullName: 'John Doe',
-        email: 'john.doe@doe.com',
+        initials: "",
+        fullName: '',
+        email: "",
       },
     }),
 
+    props: ['userinfo'],
+
+    watch: {
+      userinfo() {
+        this.HandleUserDataChange();
+      }
+    },
     methods: {
       HandleLogout() {
         this.$store.dispatch("auth/logout").then(() => {
           this.$router.go();
         })
+      },
+      HandleEditAccount()  {
+        this.$router.push("/profile");
+      },
+      HandleUserDataChange() {
+        let name = this.userinfo.name;
+        let surname = this.userinfo.surname;
+        this.user.initials = name.charAt(0).toUpperCase() + surname.charAt(0).toUpperCase();
+        this.user.fullName = name + ' ' + surname;
+        this.user.email = this.userinfo.email;
       }
     }
   }
