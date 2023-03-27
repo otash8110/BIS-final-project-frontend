@@ -30,6 +30,11 @@ const routes = [
     component: () => import("../views/User/Profile.vue"),
   },
   {
+    path: "/product",
+    name: "product",
+    component: () => import("../views/User/Product.vue"),
+  },
+  {
     path: "/error",
     name: "error",
     component: () => import("../views/Common/404.vue"),

@@ -7,7 +7,7 @@
       <nav>
         <router-link to="/">Home</router-link> |
         <router-link v-if="!currentUserStatus" to="/register">Register</router-link>
-        <router-link v-if="isManufacturer" to="/error">Products</router-link>
+        <router-link v-if="isManufacturer" to="/product">Products</router-link>
       </nav>
       <div class="pa-6">
         <router-view />
