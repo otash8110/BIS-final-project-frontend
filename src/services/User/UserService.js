@@ -1,7 +1,6 @@
 import axios from "axios";
 import authHeader from "../auth/AuthHeader";
-
-const API_URL = 'https://localhost:7083/api/v1/';
+import { API_URL } from "../Utils";
 
 class UserService {
     GetUser() {

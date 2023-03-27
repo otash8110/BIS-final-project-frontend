@@ -52,7 +52,7 @@
                             <!-- 👉 Form Actions -->
                             <VCol cols="12" class="d-flex flex-wrap gap">
                                 <VBtn
-                                @click="HandleUpdateUser"
+                                @click="HandleCreateProduct"
                                 >Create Product</VBtn>
 
                                 <VBtn color="secondary" variant="tonal" type="reset">
@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import UserService from '@/services/User/UserService'
+import ProductServices from "@/services/Manufacturer/Product/ProductServices";
 import { mapMutations } from 'vuex'
 
 export default {
@@ -84,9 +84,9 @@ export default {
         
     },
     methods: {
-        HandleUpdateUser() {
-            UserService.UpdateUser(this.user).then(() => {
-                this.addNotification("Profile info updated!");
+        HandleCreateProduct() {
+            ProductServices.CreateProduct(this.product).then(() => {
+                this.addNotification("Product created!");
             })
         },
 
