@@ -33,46 +33,34 @@
 
                 <VCardText>
                     <!-- 👉 Form -->
-                    <VForm class="mt-6">
+                    <VForm class="mt-6" v-model="form" @submit.prevent="HandleUpdateUser">
                         <VRow>
                             <!-- 👉 First Name -->
                             <VCol md="6" cols="12">
-                                <VTextField 
-                                v-model="user.name" 
-                                label="Name" />
+                                <VTextField v-model="user.name" label="Name"
+                                :rules="[validation.required]" />
                             </VCol>
 
                             <!-- 👉 Last Name -->
                             <VCol md="6" cols="12">
-                                <VTextField
-                                v-model="user.surname"
-                                label="Surname" />
+                                <VTextField v-model="user.surname" label="Surname"
+                                :rules="[validation.required]" />
                             </VCol>
 
                             <!-- 👉 Email -->
                             <VCol cols="12" md="6">
-                                <VTextField
-                                v-model="user.email"
-                                disabled
-                                label="E-mail" type="email" />
+                                <VTextField v-model="user.email" disabled label="E-mail" type="email" />
                             </VCol>
 
                             <!-- 👉 Organization -->
                             <VCol cols="12" md="6">
-                                <VTextField
-                                v-model="user.companyName"
-                                label="Company name" />
+                                <VTextField v-model="user.companyName" label="Company name" />
                             </VCol>
 
                             <!-- 👉 Form Actions -->
                             <VCol cols="12" class="d-flex flex-wrap gap-4">
-                                <VBtn
-                                @click="HandleUpdateUser"
-                                >Save changes</VBtn>
+                                <VBtn type="submit">Save changes</VBtn>
 
-                                <VBtn color="secondary" variant="tonal" type="reset">
-                                    Reset
-                                </VBtn>
                             </VCol>
                         </VRow>
                     </VForm>
@@ -80,7 +68,6 @@
             </v-card>
         </v-col>
     </v-row>
-
 </template>
 
 <script>
@@ -90,12 +77,18 @@ import { mapMutations } from 'vuex'
 export default {
 
     data: () => ({
+        form: false,
         user: {
             email: "@mail.ru",
             name: null,
             surname: null,
-            companyName: null
-        }
+            companyName: null,
+        },
+        validation: {
+                required(v) {
+                    return !!v || 'Field is required'
+                }
+            }
     }),
     mounted() {
         UserService.GetUser().then(result => {
@@ -105,6 +98,8 @@ export default {
     },
     methods: {
         HandleUpdateUser() {
+            if (!this.form) return
+
             UserService.UpdateUser(this.user).then(() => {
                 this.addNotification("Profile info updated!");
             })
@@ -118,6 +113,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

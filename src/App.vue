@@ -1,18 +1,14 @@
 <template>
-
   <v-app>
-    <navbar />
-    <v-main>
-      <ToastNotification />
-      <nav>
-        <router-link to="/">Home</router-link> |
-        <router-link v-if="!currentUserStatus" to="/register">Register</router-link>
-        <router-link v-if="isManufacturer" to="/product">Products</router-link>
-      </nav>
-      <div class="pa-6">
-        <router-view />
-      </div>
-    </v-main>
+    <v-layout>
+      <navbar />
+      <v-main>
+        <ToastNotification />
+        <div class="pa-6">
+          <router-view />
+        </div>
+      </v-main>
+    </v-layout>
   </v-app>
 </template>
 
@@ -41,6 +37,8 @@ export default {
     if (this.currentUserStatus && this.currentUserWSConnection == null) {
       this.$store.dispatch('signalr/createConnection');
     }
+
+    console.log(this.isManufacturer);
   }
 }
 </script>

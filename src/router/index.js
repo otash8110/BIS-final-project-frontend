@@ -30,8 +30,8 @@ const routes = [
     component: () => import("../views/User/Profile.vue"),
   },
   {
-    path: "/product",
-    name: "product",
+    path: "/product/create",
+    name: "product create",
     component: () => import("../views/User/Product.vue"),
   },
   {
@@ -39,6 +39,11 @@ const routes = [
     name: "error",
     component: () => import("../views/Common/404.vue"),
   },
+  {
+    path: "/manufacturer-products/",
+    name: "manufacturer-products",
+    component: () => import("../views/User/Products.vue")
+  }
 ];
 
 const router = createRouter({
@@ -49,7 +54,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const publicPages = ["/login", "/register", "/home", "/error", "/"];
   const authRequired = !publicPages.includes(to.path);
-  const manufacturerPages = ["/product", "/profile"];
+  const manufacturerPages = ["/product/create", "/profile", "/manufacturer-products"];
   const isManufacturerRequested = manufacturerPages.includes(to.path);
   const distrubutorPages = ["/test", "/profile"];
   const isDistributorRequested = distrubutorPages.includes(to.path);
