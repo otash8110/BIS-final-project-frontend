@@ -74,16 +74,19 @@ export default {
         isManufacturer() {
            this.UpdateNavList();
         },
-
-        items(newVal) {
-            console.log(newVal);
-        }
     },
     methods: {
         async GetUser() {
             if (this.currentUserStatus == true) {
-                var result = (await UserService.GetUser()).data;
-                this.user = result
+                UserService.GetUser().catch(err => {
+                    if (err.response.status == 401) {
+                        this.$store.dispatch("auth/logout").then(() => {
+                        this.$router.go();
+                        })
+                    }
+                }).then(result => {
+                    this.user = result.data;
+                });
             }
         },
 

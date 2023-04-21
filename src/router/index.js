@@ -32,7 +32,7 @@ const routes = [
   {
     path: "/product/create",
     name: "product create",
-    component: () => import("../views/User/Product.vue"),
+    component: () => import("../views/User/ProductCreate.vue"),
   },
   {
     path: "/error",
@@ -42,8 +42,16 @@ const routes = [
   {
     path: "/manufacturer-products/",
     name: "manufacturer-products",
-    component: () => import("../views/User/Products.vue")
-  }
+    component: () => import("../views/User/Products.vue"),
+  },
+  {
+    path: "/manufacturer-product-update/:id",
+    name: "manufacturer-product-update",
+    component: () => import("../views/User/ProductUpdate.vue"),
+    beforeEnter: () => {
+      return true;
+    },
+  },
 ];
 
 const router = createRouter({
@@ -54,8 +62,15 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const publicPages = ["/login", "/register", "/home", "/error", "/"];
   const authRequired = !publicPages.includes(to.path);
-  const manufacturerPages = ["/product/create", "/profile", "/manufacturer-products"];
-  const isManufacturerRequested = manufacturerPages.includes(to.path);
+  const manufacturerPages = [
+    new RegExp("/product/create"),
+    new RegExp("/profile"),
+    new RegExp("/manufacturer-products"),
+    new RegExp("/manufacturer-product-update"),
+  ];
+  const isManufacturerRequested = manufacturerPages.some((i) =>
+    i.test(to.path)
+  );
   const distrubutorPages = ["/test", "/profile"];
   const isDistributorRequested = distrubutorPages.includes(to.path);
   const loggedIn = localStorage.getItem("user");

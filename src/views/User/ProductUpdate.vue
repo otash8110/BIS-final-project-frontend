@@ -1,14 +1,14 @@
 <template>
     <v-row>
         <v-col>
-            <v-card title="Account Details">
+            <v-card title="Product Details">
                 <VCardText class="d-flex">
                     <!-- 👉 Avatar -->
                     <VAvatar rounded="lg" size="100" class="me-6" :image="null" />
 
                     <!-- 👉 Upload Photo -->
-                    <form ref="refForm" class="d-flex flex-column justify-center gap-5">
-                        <div class="d-flex flex-wrap gap-2">
+                    <form ref="refForm" class="d-flex flex-column justify-center gap">
+                        <div class="d-flex flex-wrap gap">
                             <VBtn color="primary" @click="refInputEl?.click()">
                                 <VIcon icon="mdi-cloud-upload-outline" class="d-sm-none" />
                                 <span class="d-none d-sm-block">Upload new photo</span>
@@ -33,34 +33,31 @@
 
                 <VCardText>
                     <!-- 👉 Form -->
-                    <VForm class="mt-6" v-model="form" @submit.prevent="HandleUpdateUser">
+                    <VForm class="mt-6">
                         <VRow>
                             <!-- 👉 First Name -->
                             <VCol md="6" cols="12">
-                                <VTextField v-model="user.name" label="Name"
-                                :rules="[validation.required]" />
+                                <VTextField 
+                                v-model="product.name" 
+                                label="Product Name" />
                             </VCol>
 
                             <!-- 👉 Last Name -->
                             <VCol md="6" cols="12">
-                                <VTextField v-model="user.surname" label="Surname"
-                                :rules="[validation.required]" />
-                            </VCol>
-
-                            <!-- 👉 Email -->
-                            <VCol cols="12" md="6">
-                                <VTextField v-model="user.email" disabled label="E-mail" type="email" />
-                            </VCol>
-
-                            <!-- 👉 Organization -->
-                            <VCol cols="12" md="6">
-                                <VTextField v-model="user.companyName" label="Company name" />
+                                <VTextarea
+                                v-model="product.description"
+                                label="Product Description" />
                             </VCol>
 
                             <!-- 👉 Form Actions -->
-                            <VCol cols="12" class="d-flex flex-wrap gap-4">
-                                <VBtn type="submit">Save changes</VBtn>
+                            <VCol cols="12" class="d-flex flex-wrap gap">
+                                <VBtn
+                                @click="HandleUpdateProduct"
+                                >Update Product</VBtn>
 
+                                <VBtn color="secondary" variant="tonal" type="reset">
+                                    Reset
+                                </VBtn>
                             </VCol>
                         </VRow>
                     </VForm>
@@ -68,39 +65,33 @@
             </v-card>
         </v-col>
     </v-row>
+
 </template>
 
 <script>
-import UserService from '@/services/User/UserService'
+import ProductServices from "@/services/Manufacturer/Product/ProductServices";
 import { mapMutations } from 'vuex'
 
 export default {
 
     data: () => ({
-        form: false,
-        user: {
-            email: "@mail.ru",
-            name: null,
-            surname: null,
-            companyName: null,
-        },
-        validation: {
-                required(v) {
-                    return !!v || 'Field is required'
-                }
-            }
+        product: {
+            id: "",
+            name: "",
+            description: "",
+            rating: ""
+        }
     }),
     mounted() {
-        UserService.GetUser().then(result => {
-            this.user = result.data
+        let id = this.$route.params.id;
+        ProductServices.GetProduct(id).then((result) => {
+            this.product = result.data;
         })
     },
     methods: {
-        HandleUpdateUser() {
-            if (!this.form) return
-
-            UserService.UpdateUser(this.user).then(() => {
-                this.addNotification("Profile info updated!");
+        HandleUpdateProduct() {
+            ProductServices.UpdateProduct(this.product).then(() => {
+                this.addNotification("Product updated!");
             })
         },
 
@@ -112,4 +103,8 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+    .gap {
+        gap: 15px;
+    }
+</style>
