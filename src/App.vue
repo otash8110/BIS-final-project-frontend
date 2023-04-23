@@ -4,7 +4,7 @@
       <navbar />
       <v-main>
         <ToastNotification />
-        <div class="pa-6">
+        <div class="ma-6">
           <router-view />
         </div>
       </v-main>

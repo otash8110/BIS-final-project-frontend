@@ -3,7 +3,7 @@
       v-for="(notification, i) in notifications"
       :key="i"
       v-model="notification.showing"
-      :timeout="2000"
+      :timeout="5000"
       location="top right"
       transition="slide-x-reverse-transition"
     >

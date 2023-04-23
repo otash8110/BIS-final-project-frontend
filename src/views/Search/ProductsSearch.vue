@@ -1,28 +1,42 @@
 <template>
+    <v-row class="justify-center align-center">
+        <v-col>
+            <v-form class="d-flex justify-center align-center">
+                <v-col cols="7">
+                    <v-text-field v-model="search" label="Search for products" hide-details single-line
+                        class="flex-grow-1"></v-text-field>
+                </v-col>
+                <v-col cols="2">
+                    <v-btn type="submit" @click="HandleSearch" icon="mdi-magnify" color="blue"></v-btn>
+                </v-col>
+            </v-form>
+        </v-col>
+    </v-row>
     <v-row>
-        <v-col cols="4" v-for="(product, index) in products" :key="index">
+        <v-col cols="12" sm="6" md="4" lg="2" v-for="(product, index) in products" :key="index">
             <v-card :title="product.name">
                 <v-img src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" height="200px" cover></v-img>
 
                 <v-card-title>
-                    {{product.description}}
+                    {{ product.description }}
                 </v-card-title>
 
+                <v-card-text>
+                    <v-row align="center" class="mx-0 mt-1">
+                        <v-rating :model-value="product.rating" color="amber" density="compact" half-increments readonly
+                            size="small"></v-rating>
+
+                        <div class="text-grey ms-4">
+                            4.5 (413)
+                        </div>
+                    </v-row>
+                </v-card-text>
+
                 <v-card-actions>
-                    <v-btn color="blue-grey" variant="text">
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue" variant="text" :to="`/products-search/${product.id}`">
                         View
                     </v-btn>
-                    <v-btn color="blue-grey" variant="flat" 
-                    :to="`/manufacturer-product-update/${product.id}`">
-                        Update
-                    </v-btn>
-
-                    <v-btn color="error" variant="flat" >
-                        Delete
-                    </v-btn>
-
-                    <v-spacer></v-spacer>
-
                 </v-card-actions>
             </v-card>
         </v-col>
@@ -30,42 +44,25 @@
 </template>
 
 <script>
-import ProductServices from "@/services/Manufacturer/Product/ProductServices";
-import { mapMutations } from 'vuex'
+import ProductSearch from "@/services/Search/Product";
 
 export default {
 
     data: () => ({
-        products: [{
-            name: "test1",
-            description: "some huge description,some huge descriptionsome huge description",
-            rating: 1
-        }, {
-            name: "test2",
-            description: "some huge descriptionsome huge description",
-            rating: 1
-        },
-        {
-            name: "test3",
-            description: "some huge descriptionsome huge descriptionsome huge descriptionsome huge descriptionsome huge description",
-            rating: 1
-        }]
+        products: [],
+        search: ""
     }),
     mounted() {
-        ProductServices.GetProducts().then(result => {
+        ProductSearch.GetAllProducts().then(result => {
             this.products = result.data;
         })
     },
     methods: {
-        HandleCreateProduct() {
-            ProductServices.CreateProduct(this.product).then(() => {
-                this.addNotification("Product created!");
+        HandleSearch() {
+            ProductSearch.GetProductsByName(this.search).then(result => {
+                this.products = result.data;
             })
-        },
-
-        ...mapMutations({
-            addNotification: "signalr/setNotificationMessage"
-        })
+        }
     }
 
 }

@@ -6,14 +6,6 @@
                 UzExpoMarket
             </router-link>
         </v-app-bar-title>
-        <v-row class="v-col-8">
-            <v-col>
-                <v-text-field label="Search for products" hide-details single-line class="flex-grow-1"></v-text-field>
-            </v-col>
-            <v-col cols="2" class="d-flex align-center">
-                <v-btn icon="mdi-magnify"></v-btn>
-            </v-col>
-        </v-row>
         <v-row class="v-col-2" no-gutters>
             <v-col cols="12">
                 <user-profile-menu v-if="currentUserStatus" :userinfo="user"></user-profile-menu>
@@ -48,6 +40,7 @@ export default {
             user: "",
             drawer: false,
             items: [],
+            search: ""
         }
     },
     computed: {
@@ -61,6 +54,10 @@ export default {
 
         isManufacturer() {
             return this.$store.state.auth.role == "Manufacturer" ? true : false;
+        },
+
+        isDistributor() {
+            return this.$store.state.auth.role == "Distributor" ? true : false;
         }
     },
     watch: {
@@ -72,8 +69,12 @@ export default {
         },
 
         isManufacturer() {
-           this.UpdateNavList();
+            this.UpdateNavList();
         },
+
+        isDistributor() {
+            this.UpdateNavList();
+        }
     },
     methods: {
         async GetUser() {
@@ -81,7 +82,7 @@ export default {
                 UserService.GetUser().catch(err => {
                     if (err.response.status == 401) {
                         this.$store.dispatch("auth/logout").then(() => {
-                        this.$router.go();
+                            this.$router.go();
                         })
                     }
                 }).then(result => {
@@ -96,9 +97,12 @@ export default {
                 { text: 'Create Product', icon: 'mdi-account-multiple', to: "/product/create", if: this.isManufacturer },
                 { text: 'Register', icon: 'mdi-account-multiple', to: "/register", if: !this.currentUserStatus },
                 { text: 'My Products', icon: 'mdi-account-multiple', to: "/manufacturer-products", if: this.isManufacturer },
+                { text: 'Search Products', icon: 'mdi-account-multiple', to: "/products-search", if: true },
 
             ];
-        }
+        },
+
+        
     },
     mounted() {
         this.GetUser();

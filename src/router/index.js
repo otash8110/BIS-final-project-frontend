@@ -48,10 +48,17 @@ const routes = [
     path: "/manufacturer-product-update/:id",
     name: "manufacturer-product-update",
     component: () => import("../views/User/ProductUpdate.vue"),
-    beforeEnter: () => {
-      return true;
-    },
   },
+  {
+    path: "/products-search",
+    name: "products-search",
+    component: () => import("../views/Search/ProductsSearch.vue")
+  },
+  {
+    path: "/products-search/:id",
+    name: "products-search-one",
+    component: () => import("../views/Search/ProductSearchItem.vue")
+  }
 ];
 
 const router = createRouter({
@@ -67,20 +74,32 @@ router.beforeEach((to, from, next) => {
     new RegExp("/profile"),
     new RegExp("/manufacturer-products"),
     new RegExp("/manufacturer-product-update"),
+    new RegExp("/products-search")
   ];
   const isManufacturerRequested = manufacturerPages.some((i) =>
     i.test(to.path)
   );
-  const distrubutorPages = ["/test", "/profile"];
-  const isDistributorRequested = distrubutorPages.includes(to.path);
+  const distrubutorPages = [
+    new RegExp("/profile"),
+    new RegExp("/products-search"),
+  ];
+  const isDistributorRequested = distrubutorPages.some((i) => i.test(to.path));
   const loggedIn = localStorage.getItem("user");
 
+
+  // Routing logic based on roles and auth state of the user
+
+  // #1 If user is not logged in but page requires then redirect to login page
   if (authRequired && !loggedIn) {
     next("/login");
-  } else if (!authRequired && !loggedIn) next();
+  }
+  // #2 if page does not require auth then move to it
+  else if (!authRequired && !loggedIn) next();
   else {
     store.dispatch("auth/GetUserRole").then(() => {
+      // #3 if auth not required and user is loggedIn then move to page (similar to #2 condition)
       if (!authRequired && loggedIn) next();
+      // #4 if auth is required based on roles
       else {
         if (
           isManufacturerRequested &&
@@ -92,15 +111,14 @@ router.beforeEach((to, from, next) => {
           store.state.auth.role == "Distributor"
         ) {
           next();
-        } else {
+        }
+        // #5 Error page
+        else {
           next("/error");
         }
       }
     });
   }
-
-  // trying to access a restricted page + not logged in
-  // redirect to login page
 });
 
 export default router;
