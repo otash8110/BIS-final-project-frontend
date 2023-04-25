@@ -92,6 +92,7 @@ export default {
         HandleUpdateProduct() {
             ProductServices.UpdateProduct(this.product).then(() => {
                 this.addNotification("Product updated!");
+                this.$router.push("/")
             })
         },
 

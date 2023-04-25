@@ -116,6 +116,7 @@ export default {
             }
             DistributorOfferService.CreateOffer(offer).then(() => {
                 this.addNotification("Your offer was successfully sent to manufacturer!")
+                this.$router.push("/products-search")
             })
         }
     }

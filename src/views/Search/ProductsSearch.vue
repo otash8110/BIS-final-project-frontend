@@ -65,6 +65,11 @@ export default {
                 this.isLoading = false;
             }, 100);
             this.products = result.data;
+            this.isApprovedRegistration = true;
+        }).catch(err => {
+            if(err.response.status == 403) {
+                this.$router.push("/error");
+            }
         })
     },
 

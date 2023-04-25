@@ -87,6 +87,7 @@ export default {
         HandleCreateProduct() {
             ProductServices.CreateProduct(this.product).then(() => {
                 this.addNotification("Product created!");
+                this.$router.push("/")
             })
         },
 

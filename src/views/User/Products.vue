@@ -36,24 +36,15 @@ import { mapMutations } from 'vuex'
 export default {
 
     data: () => ({
-        products: [{
-            name: "test1",
-            description: "some huge description,some huge descriptionsome huge description",
-            rating: 1
-        }, {
-            name: "test2",
-            description: "some huge descriptionsome huge description",
-            rating: 1
-        },
-        {
-            name: "test3",
-            description: "some huge descriptionsome huge descriptionsome huge descriptionsome huge descriptionsome huge description",
-            rating: 1
-        }]
+        products: []
     }),
     mounted() {
         ProductServices.GetProducts().then(result => {
             this.products = result.data;
+        }).catch(err => {
+            if (err.response.status == 403) {
+                this.$router.push("/error");
+            }
         })
     },
     methods: {
