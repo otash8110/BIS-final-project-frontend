@@ -2,11 +2,11 @@
     <v-row class="justify-center align-center">
         <v-col>
             <v-form class="d-flex justify-center align-center">
-                <v-col cols="7">
+                <v-col cols="8" md="7">
                     <v-text-field v-model="search" label="Search for products" hide-details single-line
                         class="flex-grow-1"></v-text-field>
                 </v-col>
-                <v-col cols="2">
+                <v-col cols="4" md="2">
                     <v-btn type="submit" @click="HandleSearch" icon="mdi-magnify" color="blue"></v-btn>
                 </v-col>
             </v-form>

@@ -98,6 +98,7 @@ export default {
                 { text: 'Register', icon: 'mdi-account-multiple', to: "/register", if: !this.currentUserStatus },
                 { text: 'My Products', icon: 'mdi-account-multiple', to: "/manufacturer-products", if: this.isManufacturer },
                 { text: 'Search Products', icon: 'mdi-account-multiple', to: "/products-search", if: true },
+                { text: 'Offers', icon: 'mdi-offer', to: "/manufacturer-offers", if: this.isManufacturer },
 
             ];
         },

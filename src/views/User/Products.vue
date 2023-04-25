@@ -1,6 +1,6 @@
 <template>
     <v-row>
-        <v-col cols="4" v-for="(product, index) in products" :key="index">
+        <v-col cols="12" md="4" v-for="(product, index) in products" :key="index">
             <v-card :title="product.name">
                 <v-img src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg" height="200px" cover></v-img>
 

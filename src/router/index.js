@@ -58,6 +58,11 @@ const routes = [
     path: "/products-search/:id",
     name: "products-search-one",
     component: () => import("../views/Search/ProductSearchItem.vue")
+  },
+  {
+    path: "/manufacturer-offers",
+    name: "manufacturer-offers",
+    component: () => import("../views/User/ManufacturerOffers.vue")
   }
 ];
 
@@ -74,7 +79,8 @@ router.beforeEach((to, from, next) => {
     new RegExp("/profile"),
     new RegExp("/manufacturer-products"),
     new RegExp("/manufacturer-product-update"),
-    new RegExp("/products-search")
+    new RegExp("/products-search"),
+    new RegExp("/manufacturer-offers"),
   ];
   const isManufacturerRequested = manufacturerPages.some((i) =>
     i.test(to.path)
